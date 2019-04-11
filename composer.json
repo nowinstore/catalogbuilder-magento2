@@ -1,5 +1,5 @@
 {
-  "name": "nowinstore/catalogbuilder-magento2",
+  "name": "nowinstore/catalogbuilder",
   "description": "Automatically create online and printable PDF line sheets and catalogs of your products for retail & wholesale.",
   "type": "magento2-module",
   "version": "1.0.5",
