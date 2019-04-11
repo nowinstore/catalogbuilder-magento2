@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="NowInStore_CatalogBuilder::catalogbuilder" title="Now In Store" module="NowInStore_CatalogBuilder" sortOrder="30" resource="NowInStore_CatalogBuilder::catalogbuilder"/>
+        <add id="NowInStore_CatalogBuilder::catalogbuilder_manage" title="Automatic Catalog Maker" module="NowInStore_CatalogBuilder" sortOrder="10" parent="NowInStore_CatalogBuilder::catalogbuilder" action="catalogbuilder/index/auth" resource="NowInStore_CatalogBuilder::manage"/>
+    </menu>
+</config>

@@ -1,0 +1,21 @@
+{
+  "name": "nowinstore/catalogbuilder",
+  "description": "Automatically create online and printable PDF line sheets and catalogs of your products for retail & wholesale.",
+  "type": "magento2-module",
+  "version": "1.0.5",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Now In Store Inc.",
+      "email": "support@nowinstore.com",
+      "homepage": "https://www.nowinstore.com/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "NowInStore\\CatalogBuilder\\": ""
+    }
+  }
+}
