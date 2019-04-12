@@ -42,15 +42,13 @@ class Index extends \Magento\Framework\App\Action\Action
             ->addFieldToFilter('visibility', \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH)
             ->addAttributeToSelect(array('id', 'name', 'sku', 'price', 'group_price', 'image', 'description', 'short_description'));
 
-        
-        if (isset($_GET['keywords']) && !empty ($_GET['keywords'])) {
-            $keywords = $_GET['keywords'];
+        $keywords = filter_input(INPUT_GET, 'keywords');
+        if (!empty ($keywords)) {
             $product_collection = $product_collection->addAttributeToFilter('lower_name', array('like' => '%' . strtolower($keywords) . '%'));
         }
-
         
-        if (isset($_GET['category_id']) &&  !empty ($_GET['category_id'])) {
-            $category_id = $_GET['category_id'];
+        $category_id = filter_input(INPUT_GET, 'category_id');
+        if (!empty ($category_id)) {
             $product_collection = $product_collection
                 ->joinField('category_id', 'catalog_category_product', 'category_id', 'product_id=entity_id', null, 'left')
                 ->addAttributeToFilter('category_id', array('in' => $category_id));
@@ -66,18 +64,14 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        
-        if (!isset($_GET['page']) && empty($_GET['page'])) {
+        $page = filter_input(INPUT_GET, 'page');
+        if (empty($page)) {
             $page = 1;
-        }else{
-            $page = $_GET['page'];
         }
-
         
-        if (!isset($_GET['limit']) && empty($_GET['limit'])) {
+        $limit = filter_input(INPUT_GET, 'limit');
+        if (empty($limit)) {
             $limit = 50;
-        }else{
-            $limit = $_GET['limit'];
         }
         
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -92,15 +86,13 @@ class Index extends \Magento\Framework\App\Action\Action
                 ->addAttributeToSelect(array('id', 'name', 'sku', 'price', 'group_price', 'image', 'description', 'short_description'));
 
             
-            if (isset($_GET['keywords'])  && !empty ($_GET['keywords'])) {
-                $keywords = $_GET['keywords'];
+            $keywords = filter_input(INPUT_GET, 'keywords');
+            if (!empty ($keywords)) {
                 $product_collection = $product_collection->addAttributeToFilter('lower_name', array('like' => '%' . strtolower($keywords) . '%'));
-               
             }
 
-           
-            if (isset($_GET['category_id']) && !empty ($_GET['category_id'])) {
-                 $category_id = $_GET['category_id'];
+            $category_id = filter_input(INPUT_GET, 'category_id');
+            if (!empty ($category_id)) {
                 $product_collection = $product_collection
                     ->joinField('category_id', 'catalog_category_product', 'category_id', 'product_id=entity_id', null, 'left')
                     ->addAttributeToFilter('category_id', array('in' => $category_id));

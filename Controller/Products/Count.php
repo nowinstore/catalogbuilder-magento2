@@ -47,16 +47,14 @@ class Count extends \Magento\Framework\App\Action\Action
             ->addExpressionAttributeToSelect('lower_name', 'LOWER({{name}})', array('name'))
             ->addFieldToFilter('visibility', \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH)
             ->addAttributeToSelect(array('id', 'name', 'sku', 'price', 'image'));
-
         
-        if (!empty ($_GET['query']) && isset($_GET['query'])) {
-            $query = $_GET['query'];
+        $query = filter_input(INPUT_GET, 'query');
+        if (!empty($query)) {
             $product_collection = $product_collection->addAttributeToFilter('lower_name', array('like' => '%' . strtolower($query) . '%'));
         }
 
-        
-        if (isset($_GET['category_id']) && !empty ($_GET['category_id'])) {
-            $category_id = $_GET['category_id'];
+        $category_id = filter_input(INPUT_GET, 'category_id');
+        if (!empty ($category_id)) {
             $product_collection = $product_collection
                 ->joinField('category_id', 'catalog_category_product', 'category_id', 'product_id=entity_id', null, 'left')
                 ->addAttributeToFilter('category_id', array('in' => $category_id));
