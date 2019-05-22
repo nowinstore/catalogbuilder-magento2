@@ -1,8 +1,13 @@
 <?php
 
+
 namespace NowInStore\CatalogBuilder\Controller\Products;
 
 use Magento\Framework\View\Result\PageFactory;
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 class Index extends \Magento\Framework\App\Action\Action
 {
@@ -74,6 +79,11 @@ class Index extends \Magento\Framework\App\Action\Action
             $limit = 50;
         }
         
+        $sort = filter_input(INPUT_GET, 'sort');
+        if (empty($sort)) {
+            $sort = 'name';
+        }
+        
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $products = array();
         $productsCount = $this->count();
@@ -83,8 +93,8 @@ class Index extends \Magento\Framework\App\Action\Action
                 ->addFieldToFilter('visibility', \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH)
                 ->setPageSize($limit)
                 ->setCurPage($page)
+                ->addAttributeToSort($sort, 'ASC')                
                 ->addAttributeToSelect(array('id', 'name', 'sku', 'price', 'group_price', 'image', 'description', 'short_description'));
-
             
             $keywords = filter_input(INPUT_GET, 'keywords');
             if (!empty ($keywords)) {
@@ -159,7 +169,7 @@ class Index extends \Magento\Framework\App\Action\Action
                
                
                 
-                
+                $stockItem = $product->getExtensionAttributes()->getStockItem();
                 array_push($products, array(
                     "id" => $product->getId(),
                     "title" => $product->getName(),
@@ -168,6 +178,7 @@ class Index extends \Magento\Framework\App\Action\Action
                     "wholesale_price" => floatval($wholesalePrice),
                     "main_image" => $mainImage,
                     "images" => $images,
+                    "in_stock" => ($stockItem->getIsInStock() ? 1 : 0),                    
                     "description" => $product->getDescription(),
                     "short_description" => $product->getShortDescription(),
                     "thumbnail_image" => $_imagehelper->init($product, 'product_page_image_small')
@@ -175,7 +186,8 @@ class Index extends \Magento\Framework\App\Action\Action
                                         ->getUrl(),
                     "iso_currency_code" => $currency,
                     "url" => $product->getProductUrl(),
-                    "variations" => $attributeOptions
+                    "variations" => $attributeOptions,
+                    'stock'      => intval($stockItem->getQty())
                 ));
             }
            
